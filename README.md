@@ -1,7 +1,7 @@
 # poc_bluetooth
 
-A new Flutter project.
-
+A Flutter project for create a POC to use Bluetooth
+s
 ## Getting Started
 
 This project is a starting point for a Flutter application.
