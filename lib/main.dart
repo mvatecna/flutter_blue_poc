@@ -10,8 +10,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "POC Bluetooth",
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: MyHomePage(),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+        ),
+      ),
+      home: const MyHomePage(),
     );
   }
 }
