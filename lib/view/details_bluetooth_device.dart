@@ -32,7 +32,7 @@ class DetailsBluetoothDevicePage extends ConsumerWidget {
               const Divider(),
               ListTile(
                   title: Text(
-                      "connectable : ${bluetoothDevice.advertisementData.connectable}")),
+                      "connectable :   ${bluetoothDevice.advertisementData.connectable}")),
               const Spacer(),
               FilledButton(
                 onPressed: () {
@@ -47,16 +47,3 @@ class DetailsBluetoothDevicePage extends ConsumerWidget {
     );
   }
 }
-
-
-              // onTap: () async {
-              // flutterBlue.stopScan();
-              // try {
-              //   await device.connect();
-              //   //do somtehing when connect
-              // } on PlatformException catch (e) {
-              //   if (e.code != 'already_connected') {
-              //     rethrow;
-              //   }
-              // }
-              // },
