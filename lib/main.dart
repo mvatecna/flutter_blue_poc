@@ -7,9 +7,7 @@ import 'package:poc_bluetooth/view/details_bluetooth_device.dart';
 import 'package:poc_bluetooth/view/home_page/home_page.dart';
 
 void main() => runApp(
-      ProviderScope(
-        child: MyApp(),
-      ),
+      ProviderScope(child: MyApp()),
     );
 
 class MyApp extends StatelessWidget {

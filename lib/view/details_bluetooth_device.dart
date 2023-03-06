@@ -28,10 +28,6 @@ class DetailsBluetoothDevicePage extends ConsumerWidget {
               const Divider(),
               ListTile(
                   title: Text(
-                      "local name : ${bluetoothDevice.advertisementData.localName}")),
-              const Divider(),
-              ListTile(
-                  title: Text(
                       "connectable :   ${bluetoothDevice.advertisementData.connectable}")),
               const Spacer(),
               FilledButton(

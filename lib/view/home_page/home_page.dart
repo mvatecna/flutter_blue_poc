@@ -42,7 +42,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                     title: Text(bluetoothDevice.device.name == ""
                         ? "unknown device"
                         : bluetoothDevice.device.name),
-                    subtitle: Text("${bluetoothDevice.device.id}"),
+                    subtitle: Text(
+                      "${bluetoothDevice.device.id}",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                     leading: const Icon(Icons.bluetooth_rounded),
                     onTap: () => context.push(
                       Routes.detailsBluetoothDevice,
