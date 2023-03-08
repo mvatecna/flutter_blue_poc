@@ -1,37 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:poc_bluetooth/view/bluetooth_off_page.dart';
-import 'package:poc_bluetooth/view/find_device_page.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:poc_bluetooth/src/ble/ble_device_connector.dart';
+import 'package:poc_bluetooth/src/ble/ble_device_interactor.dart';
+import 'package:poc_bluetooth/src/ble/ble_scanner.dart';
+import 'package:poc_bluetooth/src/ble/ble_status_monitor.dart';
+import 'package:poc_bluetooth/src/ui/ble_status_screen.dart';
+import 'package:poc_bluetooth/src/ui/device_list.dart';
+import 'package:provider/provider.dart';
+
+import 'src/ble/ble_logger.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final ble = FlutterReactiveBle();
+  final bleLogger = BleLogger(ble: ble);
+  final scanner = BleScanner(ble: ble, logMessage: bleLogger.addToLog);
+  final monitor = BleStatusMonitor(ble);
+  final connector = BleDeviceConnector(
+    ble: ble,
+    logMessage: bleLogger.addToLog,
+  );
+  final serviceDiscoverer = BleDeviceInteractor(
+    bleDiscoverServices: ble.discoverServices,
+    readCharacteristic: ble.readCharacteristic,
+    writeWithResponse: ble.writeCharacteristicWithResponse,
+    writeWithOutResponse: ble.writeCharacteristicWithoutResponse,
+    subscribeToCharacteristic: ble.subscribeToCharacteristic,
+    logMessage: bleLogger.addToLog,
+  );
   runApp(
-    const FlutterBlueApp(),
+    MultiProvider(
+      providers: [
+        Provider.value(value: scanner),
+        Provider.value(value: monitor),
+        Provider.value(value: connector),
+        Provider.value(value: serviceDiscoverer),
+        Provider.value(value: bleLogger),
+        StreamProvider<BleScannerState?>(
+          create: (_) => scanner.state,
+          initialData: const BleScannerState(
+            discoveredDevices: [],
+            scanIsInProgress: false,
+          ),
+        ),
+        StreamProvider<BleStatus?>(
+          create: (_) => monitor.state,
+          initialData: BleStatus.unknown,
+        ),
+        StreamProvider<ConnectionStateUpdate>(
+          create: (_) => connector.state,
+          initialData: const ConnectionStateUpdate(
+            deviceId: 'Unknown device',
+            connectionState: DeviceConnectionState.disconnected,
+            failure: null,
+          ),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Reactive BLE example',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.lightGreen,
+          ),
+        ),
+        home: const HomeScreen(),
+      ),
+    ),
   );
 }
 
-class FlutterBlueApp extends StatelessWidget {
-  const FlutterBlueApp({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: StreamBuilder<BluetoothState>(
-          stream: FlutterBluePlus.instance.state,
-          initialData: BluetoothState.unknown,
-          builder: (c, snapshot) {
-            final state = snapshot.data;
-            debugPrint("BluetoothState $state");
-            if (state == BluetoothState.on) {
-              return const FindDevicesPage();
-            }
-            return BluetoothOffPage(state: state);
-          }),
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Consumer<BleStatus?>(
+        builder: (_, status, __) {
+          if (status == BleStatus.ready) {
+            return const DeviceListScreen();
+          } else {
+            return BleStatusScreen(status: status ?? BleStatus.unknown);
+          }
+        },
+      );
 }
