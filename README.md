@@ -32,5 +32,10 @@ AndroidManifest.xml
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
 ```
 
-### Remarques 
+### Remarques package [flutter_blue_plus](https://pub.dev/packages/flutter_blue_plus)
+il est disponible sur la branche plugin/flutter_blue_plus
 sur iOS sa marche plutot bien sans trop de config sur Android c'est un peu plus aléatoire concernant la détection d'appareil bluetooth (j'ai tester avec un [Google Pixel 7](https://store.google.com/fr/product/pixel_7?hl=fr) et un [Xiaomi Poco F2 Pro](https://www.mi.com/fr/poco-f2-pro/))
+
+
+### Remarques package [flutter_reactive_ble](https://pub.dev/packages/flutter_reactive_ble)
+fonctionne beaucoup mieux il est developper pas les équipes de [PhiliphHue](https://github.com/PhilipsHue/flutter_reactive_ble) il a quand même quelque petit souci de connexion au appareil avec android, comme dit précédemment tester seulement avec 2 devices
