@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:poc_bluetooth/src/ble/reactive_state.dart';
+import 'package:meta/meta.dart';
 
 class BleScanner implements ReactiveState<BleScannerState> {
   BleScanner({
