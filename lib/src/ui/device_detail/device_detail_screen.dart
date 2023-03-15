@@ -21,7 +21,7 @@ class DeviceDetailScreen extends StatelessWidget {
 }
 
 class _DeviceDetail extends StatelessWidget {
-  const _DeviceDetail({required this.device, required this.disconnect, super.key});
+  const _DeviceDetail({required this.device, required this.disconnect});
 
   final DiscoveredDevice device;
   final void Function(String deviceId) disconnect;

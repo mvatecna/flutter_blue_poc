@@ -13,17 +13,19 @@ class DeviceListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer3<BleScanner, BleScannerState?, BleLogger>(
-      builder: (_, bleScanner, bleScannerState, bleLogger, __) => _DeviceList(
-        scannerState: bleScannerState ??
-            const BleScannerState(
-              discoveredDevices: [],
-              scanIsInProgress: false,
-            ),
-        startScan: bleScanner.startScan,
-        stopScan: bleScanner.stopScan,
-        toggleVerboseLogging: bleLogger.toggleVerboseLogging,
-        verboseLogging: bleLogger.verboseLogging,
-      ),
+      builder: (_, bleScanner, bleScannerState, bleLogger, __) {
+        return _DeviceList(
+          scannerState: bleScannerState ??
+              const BleScannerState(
+                discoveredDevices: [],
+                scanIsInProgress: false,
+              ),
+          startScan: bleScanner.startScan,
+          stopScan: bleScanner.stopScan,
+          toggleVerboseLogging: bleLogger.toggleVerboseLogging,
+          verboseLogging: bleLogger.verboseLogging,
+        );
+      },
     );
   }
 }
@@ -48,38 +50,19 @@ class _DeviceList extends StatefulWidget {
 }
 
 class _DeviceListState extends State<_DeviceList> {
-  late TextEditingController _uuidController;
-
   @override
   void initState() {
     super.initState();
-    _uuidController = TextEditingController()..addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     widget.stopScan();
-    _uuidController.dispose();
     super.dispose();
   }
 
-  bool _isValidUuidInput() {
-    final uuidText = _uuidController.text;
-    if (uuidText.isEmpty) {
-      return true;
-    } else {
-      try {
-        Uuid.parse(uuidText);
-        return true;
-      } on Exception {
-        return false;
-      }
-    }
-  }
-
   void _startScanning() {
-    final text = _uuidController.text;
-    widget.startScan(text.isEmpty ? [] : [Uuid.parse(_uuidController.text)]);
+    widget.startScan([]);
   }
 
   @override
@@ -95,20 +78,11 @@ class _DeviceListState extends State<_DeviceList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 16),
-                  const Text('Service UUID (2, 4, 16 bytes):'),
-                  TextField(
-                    controller: _uuidController,
-                    enabled: !widget.scannerState.scanIsInProgress,
-                    decoration: InputDecoration(
-                        errorText: _uuidController.text.isEmpty || _isValidUuidInput() ? null : 'Invalid UUID format'),
-                    autocorrect: false,
-                  ),
-                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FilledButton(
-                        onPressed: !widget.scannerState.scanIsInProgress && _isValidUuidInput() ? _startScanning : null,
+                        onPressed: !widget.scannerState.scanIsInProgress ? _startScanning : null,
                         child: const Text('Scan'),
                       ),
                       ElevatedButton(
@@ -132,7 +106,7 @@ class _DeviceListState extends State<_DeviceList> {
                   ListTile(
                     title: Text(
                       !widget.scannerState.scanIsInProgress
-                          ? 'Enter a UUID above and tap start to begin scanning'
+                          ? 'Tap start to begin scanning'
                           : 'Tap a device to connect to it',
                     ),
                     trailing: (widget.scannerState.scanIsInProgress || widget.scannerState.discoveredDevices.isNotEmpty)

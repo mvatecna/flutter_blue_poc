@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:poc_bluetooth/src/ble/reactive_state.dart';
-import 'package:meta/meta.dart';
 
 class BleScanner implements ReactiveState<BleScannerState> {
   BleScanner({
@@ -13,8 +13,7 @@ class BleScanner implements ReactiveState<BleScannerState> {
 
   final FlutterReactiveBle _ble;
   final void Function(String message) _logMessage;
-  final StreamController<BleScannerState> _stateStreamController =
-      StreamController();
+  final StreamController<BleScannerState> _stateStreamController = StreamController();
 
   final _devices = <DiscoveredDevice>[];
 
@@ -25,8 +24,7 @@ class BleScanner implements ReactiveState<BleScannerState> {
     _logMessage('Start ble discovery');
     _devices.clear();
     _subscription?.cancel();
-    _subscription =
-        _ble.scanForDevices(withServices: serviceIds).listen((device) {
+    _subscription = _ble.scanForDevices(withServices: serviceIds).listen((device) {
       final knownDeviceIndex = _devices.indexWhere((d) => d.id == device.id);
       if (knownDeviceIndex >= 0) {
         _devices[knownDeviceIndex] = device;

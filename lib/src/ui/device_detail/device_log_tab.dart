@@ -14,7 +14,7 @@ class DeviceLogTab extends StatelessWidget {
 }
 
 class _DeviceLogTab extends StatelessWidget {
-  const _DeviceLogTab({required this.messages, super.key});
+  const _DeviceLogTab({required this.messages});
 
   final List<String> messages;
 
