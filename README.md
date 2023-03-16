@@ -8,7 +8,7 @@ Créer un POC en utilisant le [protocole GATT](http://tvaira.free.fr/bts-sn/acti
 
 
 ### iOS
-info.plist 
+info.plist
 ```plist
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Need BLE permission</string>
@@ -24,9 +24,9 @@ info.plist
 ### Android
 AndroidManifest.xml
 ```xml
-    <uses-permission android:name="android.permission.BLUETOOTH" />  
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />  
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -39,3 +39,6 @@ sur iOS sa marche plutot bien sans trop de config sur Android c'est un peu plus 
 
 ### Remarques package [flutter_reactive_ble](https://pub.dev/packages/flutter_reactive_ble)
 fonctionne beaucoup mieux il est developper pas les équipes de [PhiliphHue](https://github.com/PhilipsHue/flutter_reactive_ble) il a quand même quelque petit souci de connexion au appareil avec android, comme dit précédemment tester seulement avec 2 devices
+
+### Video
+Vous pouvez trouver des vidéos qui montre le fonctionnement de l'application avec le plugin [flutter_reactive_ble](https://pub.dev/packages/flutter_reactive_ble) pour android et pour iOS. Les vidéos se trouve dans le dossier [video](/video)
